@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "688366539980",
+    "project_id": "mynotes-claud",
+    "storage_bucket": "mynotes-claud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688366539980:android:f5eaaef7910040f507de69",
+        "android_client_info": {
+          "package_name": "com.ebefa.mynotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuZVr7jm4827cug_12Cj_MHZMtFKcXfgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
