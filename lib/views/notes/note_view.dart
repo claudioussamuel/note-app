@@ -35,8 +35,14 @@ class _NoteViewState extends State<NoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Main UI"),
+        title: const Text("Your Notes"),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(newNoteRoute);
+            },
+            icon: const Icon(Icons.add),
+          ),
           PopupMenuButton(onSelected: (value) async {
             devtools.log(value.toString());
             switch (value) {
@@ -75,6 +81,7 @@ class _NoteViewState extends State<NoteView> {
                   stream: _notesService.allNotes,
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
+                      case ConnectionState.active:
                       case ConnectionState.waiting:
                         return const Text("Waiting .....");
                       default:

@@ -5,12 +5,14 @@ import 'package:mynotes/views/login_view.dart';
 import 'package:mynotes/views/register_view.dart';
 import 'package:mynotes/views/verify_email_view.dart';
 
-import 'views/note_view.dart';
+import 'views/notes/new_note_view.dart';
+import 'views/notes/note_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
-    title: 'Flutter Demo',
+    title: 'Note App',
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       useMaterial3: true,
@@ -20,7 +22,8 @@ void main() {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),
       notesRoute: (context) => const NoteView(),
-      verifyEmailRoute: (context) => const VerifyEmailView()
+      verifyEmailRoute: (context) => const VerifyEmailView(),
+      newNoteRoute: (_) => const NewNoteView(),
     },
   ));
 }
