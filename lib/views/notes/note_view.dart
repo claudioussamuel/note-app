@@ -17,7 +17,7 @@ class NoteView extends StatefulWidget {
 
 class _NoteViewState extends State<NoteView> {
   late final NotesService _notesService;
-  String get userEmail => AuthService.firebase().currentUser!.email!;
+  String get userEmail => AuthService.firebase().currentUser!.email;
 
   @override
   void initState() {
@@ -67,7 +67,9 @@ class _NoteViewState extends State<NoteView> {
         ],
       ),
       body: FutureBuilder(
-        future: _notesService.getOrCreateUser(email: userEmail),
+        future: _notesService.getOrCreateUser(
+          email: userEmail,
+        ),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
