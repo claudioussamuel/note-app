@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/service/auth/auth_exceptions.dart';
-import 'package:mynotes/service/auth/auth_service.dart';
-
+import 'package:mynotes/service/auth/bloc/auth_bloc.dart';
+import 'package:mynotes/service/auth/bloc/auth_event.dart';
 import '../utilities/dialogs/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -61,29 +61,12 @@ class _LoginViewState extends State<LoginView> {
                 final password = _password.text;
 
                 try {
-                  final userCredential = await AuthService.firebase()
-                      .login(email: email, password: password);
-                  final user = AuthService.firebase().currentUser;
-                  if (user?.isEmailVerified ?? false) {
-                    if (context.mounted) {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          notesRoute, (route) => false);
-                    }
-                  } else {
-                    if (context.mounted) {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          verifyEmailRoute, (route) => false);
-                    }
-                  }
-
-                  devtools.log(userCredential.toString());
-                } on UserNotFoundAuthException {
-                  if (context.mounted) {
-                    await showErrorDialog(
-                      context,
-                      "user-not-found",
-                    );
-                  }
+                  context.read<AuthBloc>().add(
+                        AuthEventLogIn(
+                          email,
+                          password,
+                        ),
+                      );
                 } on WrongPasswordAuthException {
                   if (context.mounted) {
                     await showErrorDialog(
