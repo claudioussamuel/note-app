@@ -6,6 +6,13 @@ import 'package:mynotes/service/auth/bloc/auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(AuthProvider provider)
       : super(const AuthStateUnInitialized(isLoading: true)) {
+    on<AuthEventShouldRegister>((event, emit) {
+      emit(const AuthStateRegistering(
+        exception: null,
+        isLoading: false,
+      ));
+    });
+
     // send email verification
     on<AuthEventSendEmailVerification>((event, emit) async {
       await provider.sendEmailVerification();
@@ -41,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (user == null) {
         emit(AuthStateLoggedOut(
           exception: null,
-          isLoading: true,
+          isLoading: false,
         ));
       } else if (!user.isEmailVerified) {
         emit(const AuthStateNeedsVerification(isLoading: false));
@@ -112,11 +119,50 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           isLoading: false,
         ));
       } on Exception catch (e) {
-        AuthStateLoggedOut(
+        emit(AuthStateLoggedOut(
           exception: e,
           isLoading: false,
-        );
+        ));
       }
+    });
+
+    on<AuthEventForgotPassword>((event, emit) async {
+      emit(
+        const AuthStateForgotPassword(
+          isLoading: false,
+          hasSentEmail: false,
+          exception: null,
+        ),
+      );
+      final email = event.email;
+      if (email == null) {
+        return;
+      }
+      emit(
+        const AuthStateForgotPassword(
+          isLoading: true,
+          hasSentEmail: false,
+          exception: null,
+        ),
+      );
+      bool didSendEmail;
+      Exception? exception;
+
+      try {
+        await provider.sendPassedReset(toEmail: email);
+        didSendEmail = true;
+        exception = null;
+      } on Exception catch (e) {
+        didSendEmail = false;
+        exception = e;
+      }
+      emit(
+        AuthStateForgotPassword(
+          isLoading: false,
+          hasSentEmail: didSendEmail,
+          exception: exception,
+        ),
+      );
     });
   }
 }

@@ -28,6 +28,17 @@ class AuthStateRegistering extends AuthState {
   });
 }
 
+class AuthStateForgotPassword extends AuthState {
+  final Exception? exception;
+  final bool hasSentEmail;
+
+  const AuthStateForgotPassword({
+    required super.isLoading,
+    required this.hasSentEmail,
+    required this.exception,
+  });
+}
+
 class AuthStateLoggedIn extends AuthState {
   final AuthUser user;
   const AuthStateLoggedIn({

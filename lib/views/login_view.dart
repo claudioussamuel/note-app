@@ -90,6 +90,14 @@ class _LoginViewState extends State<LoginView> {
                 },
                 child: const Text('Not Reistered? Reister now'),
               ),
+              TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                        const AuthEventForgotPassword(),
+                      );
+                },
+                child: const Text('I forgot all my password'),
+              ),
             ],
           )),
     );
